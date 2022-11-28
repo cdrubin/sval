@@ -24,15 +24,20 @@ export function getProto(obj: any) {
 const getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor
 function getGetterOrSetter(method: 'get' | 'set', obj: any, key: string) {
   while (obj) {
+    //console.log( '[c]' )
     const descriptor = getOwnPropertyDescriptor(obj, key)
+    //console.log( '[d]' )
     const value = typeof descriptor !== 'undefined'
       && typeof descriptor.writable === 'undefined'
       && typeof descriptor[method] === 'function'
       && descriptor[method]
+    //console.log( '[e] ' + value )  
     if (value) {
       return value
     } else {
+      //console.log( '[f]' )
       obj = getProto(obj)
+      //console.log( '[g]' )
     }
   }
 }
@@ -84,6 +89,7 @@ try {
     if (!global.Object) throw 0
     names = getOwnNames(globalObj = global).filter(n => n !== 'GLOBAL' && n !== 'root')
   } catch (err) {
+    console.log( '[simulating global env]' )
     // Unknow environment, simulate a global environment
     try { globalObj.Object = Object                         } catch (err) { /* empty */ }
     try { globalObj.Function = Function                     } catch (err) { /* empty */ }
@@ -104,9 +110,12 @@ try {
     try { globalObj.EvalError = EvalError                   } catch (err) { /* empty */ }
     try { globalObj.RangeError = RangeError                 } catch (err) { /* empty */ }
     try { globalObj.ReferenceError = ReferenceError         } catch (err) { /* empty */ }
+    try { globalObj.Request = Request                       } catch (err) { /* empty */ }
+    try { globalObj.Response = Response                     } catch (err) { /* empty */ }    
     try { globalObj.SyntaxError = SyntaxError               } catch (err) { /* empty */ }
     try { globalObj.TypeError = TypeError                   } catch (err) { /* empty */ }
     try { globalObj.URIError = URIError                     } catch (err) { /* empty */ }
+    try { globalObj.URL = URL                               } catch (err) { /* empty */ }    
     try { globalObj.JSON = JSON                             } catch (err) { /* empty */ }
     try { globalObj.Math = Math                             } catch (err) { /* empty */ }
     try { globalObj.console = console                       } catch (err) { /* empty */ }

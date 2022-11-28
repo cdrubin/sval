@@ -69,7 +69,9 @@ class Sval {
   run(code: string | Node) {
     const ast = typeof code === 'string' ? parse(code, this.options) as Node : code
     hoist(ast as Program, this.scope)
+    console.log( '[a]' )
     evaluate(ast, this.scope)
+    console.log( '[b]' )    
   }
 }
 

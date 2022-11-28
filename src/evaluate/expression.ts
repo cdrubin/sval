@@ -288,6 +288,8 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
   let func: any
   let object: any
 
+  //console.log( '[2]' )
+
   if (node.callee.type === 'MemberExpression') {
     object = yield* MemberExpression(node.callee, scope, { getObj: true })
   
@@ -354,6 +356,7 @@ export function* CallExpression(node: estree.CallExpression, scope: Scope) {
   }
 
   if (object && object[WINDOW] && func.toString().indexOf('[native code]') !== -1) {
+    //console.log( '[1]' )
     // you will get "TypeError: Illegal invocation" if not binding native function with window
     return func.apply(object[WINDOW], args)
   }
